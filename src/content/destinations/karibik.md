@@ -3,7 +3,7 @@ title: Karibik
 route: /karibik/
 order: 7
 eyebrow: Tropické ostrovy
-summary: Kuba i zeleňoučké ostrovy Malých Antil, pohádkové pláže a kultura plná
+summary: Kuba i zelené ostrovy Malých Antil, pohádkové pláže a kultura plná
   hudby a barev.
 heroImage: /images/karibik/hero.jpg
 heroAlt: Pobřeží a tropická krajina Karibiku
