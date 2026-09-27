@@ -5,8 +5,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 <header class="site-header" id="top">
   <div class="header-inner container">
     <a class="brand" href="/" aria-label="Delmar Tour – úvod">
-      <img src="/images/brand/delmar-tour-logo.png" width="416" height="80" alt="Delmar Tour" />
-      <span>cestovní agentura</span>
+      <img src="/images/brand/delmar-tour-logo-2026.png" width="2172" height="724" alt="Delmar Tour – cestovní agentura" />
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
       <span class="sr-only">Otevřít menu</span><span></span><span></span><span></span>
@@ -53,9 +52,8 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 <style>
   .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(16px); }
   .header-inner { display: flex; min-height: 5.4rem; align-items: center; justify-content: space-between; gap: 1rem; }
-  .brand { display: flex; flex-direction: column; align-items: flex-start; width: 170px; text-decoration: none; }
-  .brand img { width: 170px; height: auto; }
-  .brand span { margin: -.1rem 0 0 2.25rem; color: var(--muted); font-size: .64rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  .brand { display: flex; flex: 0 0 auto; width: clamp(180px, 17vw, 220px); text-decoration: none; }
+  .brand img { display: block; width: 100%; height: auto; }
   .primary-nav { display: flex; align-items: center; gap: clamp(.55rem, 1.4vw, 1.25rem); font-size: .82rem; font-weight: 750; }
   .primary-nav > a, .nav-group > a { padding: 2rem 0; text-decoration: none; }
   .primary-nav a:hover, .primary-nav a.active { color: var(--sea); }
@@ -70,6 +68,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
   .menu-toggle > span:not(.sr-only) { display: block; height: 2px; margin: 4px 0; background: var(--ink); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
   @media (max-width: 1050px) {
+    .brand { width: clamp(170px, 46vw, 210px); }
     .menu-toggle { display: block; }
     .primary-nav { position: fixed; inset: 5.4rem 0 auto; display: none; max-height: calc(100vh - 5.4rem); padding: 1rem; overflow-y: auto; border-bottom: 1px solid var(--line); background: var(--paper); font-size: 1rem; }
     .primary-nav.open { display: grid; }

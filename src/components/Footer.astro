@@ -4,7 +4,9 @@ const { settings } = Astro.props;
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <img src="/images/brand/delmar-tour-logo.png" width="416" height="80" alt="Delmar Tour" />
+      <a class="footer-brand" href="/" aria-label="Delmar Tour – úvod">
+        <img src="/images/brand/delmar-tour-logo-2026.png" width="2172" height="724" alt="Delmar Tour – cestovní agentura" />
+      </a>
       <p class="tagline">Poznávací cesty s osobním přístupem.</p>
     </div>
     <div>
@@ -23,7 +25,8 @@ const { settings } = Astro.props;
 <style>
   .site-footer { padding: 4rem 0 1.5rem; background: var(--ink); color: #e9f0f2; }
   .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; }
-  img { width: min(240px, 100%); filter: brightness(0) invert(1); }
+  .footer-brand { display: block; width: min(280px, 100%); padding: .65rem .85rem; border-radius: .9rem; background: #fff; }
+  .footer-brand img { display: block; width: 100%; height: auto; }
   .tagline { margin-top: 1rem; color: #aebdc5; }
   h2 { margin-bottom: 1rem; color: white; font-family: inherit; font-size: .76rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
   a { color: white; }
