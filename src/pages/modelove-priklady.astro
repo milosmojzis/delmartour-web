@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+
+const itineraries = (await getCollection('itineraries')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(itineraries.map(async (entry) => ({ entry, Content: (await render(entry)).Content })));
+---
+<BaseLayout title="Modelové příklady" description="Archivované modelové programy poznávacích cest do Katalánska a Thajska." image="/images/modelove-priklady/hero.jpg">
+  <PageHero title="Modelové příklady" eyebrow="Inspirace na cestu" intro="Dva ukázkové programy zachované z původní nabídky Delmar Tour." image="/images/modelove-priklady/hero.jpg" imageAlt="Krab poustevník na písečné pláži" />
+  <section class="section"><div class="container"><p class="context">Programy představují modelové příklady cest. Jejich konkrétní podoba závisí na domluvě.</p><div class="itinerary-list">{rendered.map(({ entry, Content }, index) => <article class="itinerary surface"><header><span>{String(index + 1).padStart(2, '0')}</span><div><p class="eyebrow">{entry.data.destination} · {entry.data.duration}</p><h2>{entry.data.title}</h2><p>{entry.data.intro}</p></div></header><div class="itinerary-body prose"><Content /></div></article>)}</div></div></section>
+</BaseLayout>
+<style>
+  .context { max-width: 48rem; margin: 0 0 2rem; color: var(--muted); font-size: 1.12rem; }
+  .itinerary-list { display: grid; gap: 2rem; }
+  .itinerary { overflow: hidden; }
+  .itinerary header { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; padding: 2rem; background: var(--cream); }
+  .itinerary header > span { color: var(--sea); font-family: Georgia, serif; font-size: 3rem; line-height: 1; }
+  .itinerary header p:last-child { max-width: 45rem; margin: .8rem 0 0; color: var(--muted); }
+  .itinerary-body { max-width: none; padding: 2rem clamp(1.2rem, 5vw, 6rem); }
+  .itinerary-body :global(ol) { margin: 0; padding: 0; list-style: none; }
+  .itinerary-body :global(li) { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .itinerary-body :global(p) { padding: .8rem 0; border-bottom: 1px solid var(--line); }
+  @media (max-width: 600px) { .itinerary header { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,81 @@
+---
+const { images = [], title = 'Fotogalerie' } = Astro.props;
+const galleryId = `gallery-${Math.random().toString(36).slice(2)}`;
+---
+{images.length > 0 && (
+  <section class="gallery-section section" aria-labelledby={`${galleryId}-heading`}>
+    <div class="container">
+      <div class="gallery-heading">
+        <div><p class="eyebrow">Z archivu Delmar Tour</p><h2 id={`${galleryId}-heading`}>{title}</h2></div>
+        <p>Vybrané fotografie z původního webu.</p>
+      </div>
+      <div class="gallery" data-gallery={galleryId}>
+        {images.map((image: { src: string; alt: string; caption?: string }, index: number) => (
+          <button class="gallery-item" type="button" data-index={index} aria-label={`Otevřít fotografii: ${image.alt}`}>
+            <img src={image.src} alt={image.alt} loading="lazy" />
+            {image.caption && <span>{image.caption}</span>}
+          </button>
+        ))}
+      </div>
+    </div>
+    <dialog class="lightbox" data-lightbox={galleryId} aria-labelledby={`${galleryId}-caption`}>
+      <button class="lightbox-close" type="button" aria-label="Zavřít galerii">×</button>
+      <button class="lightbox-prev" type="button" aria-label="Předchozí fotografie">←</button>
+      <figure><img src="" alt="" /><figcaption id={`${galleryId}-caption`}></figcaption></figure>
+      <button class="lightbox-next" type="button" aria-label="Další fotografie">→</button>
+      <span class="lightbox-count" aria-live="polite"></span>
+    </dialog>
+  </section>
+)}
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
+    const id = gallery.dataset.gallery!;
+    const dialog = document.querySelector<HTMLDialogElement>(`[data-lightbox="${id}"]`)!;
+    const buttons = [...gallery.querySelectorAll<HTMLButtonElement>('.gallery-item')];
+    const image = dialog.querySelector<HTMLImageElement>('figure img')!;
+    const caption = dialog.querySelector<HTMLElement>('figcaption')!;
+    const count = dialog.querySelector<HTMLElement>('.lightbox-count')!;
+    let current = 0;
+    let opener: HTMLButtonElement | null = null;
+    const show = (index: number) => {
+      current = (index + buttons.length) % buttons.length;
+      const source = buttons[current].querySelector<HTMLImageElement>('img')!;
+      image.src = source.src;
+      image.alt = source.alt;
+      caption.textContent = buttons[current].querySelector('span')?.textContent || source.alt;
+      count.textContent = `${current + 1} / ${buttons.length}`;
+    };
+    buttons.forEach((button, index) => button.addEventListener('click', () => { opener = button; show(index); dialog.showModal(); }));
+    dialog.querySelector('.lightbox-close')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('.lightbox-prev')?.addEventListener('click', () => show(current - 1));
+    dialog.querySelector('.lightbox-next')?.addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') show(current - 1);
+      if (event.key === 'ArrowRight') show(current + 1);
+    });
+    dialog.addEventListener('close', () => opener?.focus());
+  });
+</script>
+<style>
+  .gallery-section { background: var(--cream); }
+  .gallery-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
+  .gallery-heading > p { max-width: 22rem; margin: 0; color: var(--muted); }
+  .gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
+  .gallery-item { position: relative; grid-column: span 4; min-height: 17rem; padding: 0; overflow: hidden; border: 0; border-radius: 1rem; background: #dfe5e5; cursor: zoom-in; }
+  .gallery-item:first-child:nth-last-child(4), .gallery-item:first-child:nth-last-child(4) ~ .gallery-item { grid-column: span 3; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+  .gallery-item:hover img { transform: scale(1.04); }
+  .gallery-item span { position: absolute; inset: auto .75rem .75rem; padding: .45rem .7rem; border-radius: 999px; background: rgba(8,31,42,.78); color: white; font-size: .78rem; backdrop-filter: blur(8px); }
+  .lightbox { width: min(92vw, 1100px); max-width: none; height: min(88vh, 800px); max-height: none; padding: 2rem 4.5rem; border: 0; border-radius: 1.2rem; background: #0c1720; color: white; }
+  .lightbox::backdrop { background: rgba(4,14,20,.86); backdrop-filter: blur(6px); }
+  .lightbox figure { display: grid; height: 100%; margin: 0; place-items: center; }
+  .lightbox figure img { max-width: 100%; max-height: calc(100% - 3rem); object-fit: contain; }
+  .lightbox figcaption { align-self: end; color: #d8e1e5; text-align: center; }
+  .lightbox button { position: absolute; z-index: 2; display: grid; width: 3rem; height: 3rem; padding: 0; place-items: center; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; background: rgba(255,255,255,.1); color: white; cursor: pointer; }
+  .lightbox-close { top: 1rem; right: 1rem; font-size: 1.7rem; }
+  .lightbox-prev, .lightbox-next { top: 50%; transform: translateY(-50%); }
+  .lightbox-prev { left: .8rem; } .lightbox-next { right: .8rem; }
+  .lightbox-count { position: absolute; top: 1.65rem; left: 1.5rem; color: #b7c3c8; font-size: .8rem; }
+  @media (max-width: 760px) { .gallery-heading { align-items: start; flex-direction: column; } .gallery-item, .gallery-item:first-child:nth-last-child(4), .gallery-item:first-child:nth-last-child(4) ~ .gallery-item { grid-column: span 6; min-height: 12rem; } .lightbox { padding: 3rem .75rem 1rem; } }
+</style>

@@ -1,0 +1,162 @@
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: settings
+    label: Nastavení a kontakt
+    type: file
+    path: src/content/settings/site.json
+    fields:
+      - name: brandName
+        label: Název značky
+        type: string
+      - name: descriptor
+        label: Popis značky
+        type: string
+      - name: phone
+        label: Telefon
+        type: string
+      - name: email
+        label: E-mail
+        type: string
+      - name: address
+        label: Sídlo
+        type: string
+      - name: companyName
+        label: Název společnosti
+        type: string
+      - name: companyId
+        label: IČ
+        type: string
+      - name: vatId
+        label: DIČ
+        type: string
+      - name: register
+        label: Zápis v rejstříku
+        type: text
+      - name: bank
+        label: Banka
+        type: text
+      - name: bankAccount
+        label: Číslo účtu
+        type: string
+
+  - name: pages
+    label: Hlavní stránky
+    type: collection
+    path: src/content/pages
+    view:
+      fields: [title, eyebrow]
+    fields:
+      - name: title
+        label: Nadpis
+        type: string
+      - name: eyebrow
+        label: Krátký horní popisek
+        type: string
+      - name: summary
+        label: Úvodní text
+        type: text
+      - name: heroImage
+        label: Hlavní fotografie
+        type: image
+        required: false
+      - name: heroAlt
+        label: Popis hlavní fotografie
+        type: string
+        required: false
+      - name: body
+        label: Text stránky
+        type: rich-text
+
+  - name: destinations
+    label: Destinace
+    type: collection
+    path: src/content/destinations
+    view:
+      fields: [title, route, parent]
+      primary: title
+    fields:
+      - name: title
+        label: Název
+        type: string
+      - name: route
+        label: Adresa stránky
+        type: string
+      - name: parent
+        label: Nadřazená destinace
+        type: string
+        required: false
+      - name: order
+        label: Pořadí
+        type: number
+      - name: eyebrow
+        label: Krátký horní popisek
+        type: string
+      - name: summary
+        label: Úvodní text
+        type: text
+      - name: heroImage
+        label: Hlavní fotografie
+        type: image
+        required: false
+      - name: heroAlt
+        label: Popis hlavní fotografie
+        type: string
+        required: false
+      - name: cardImage
+        label: Fotografie na kartě
+        type: image
+        required: false
+      - name: gallery
+        label: Galerie
+        type: object
+        list: true
+        required: false
+        fields:
+          - name: src
+            label: Fotografie
+            type: image
+          - name: alt
+            label: Alternativní popis
+            type: string
+          - name: caption
+            label: Titulek
+            type: string
+            required: false
+      - name: featured
+        label: Zvýrazněná destinace
+        type: boolean
+        required: false
+      - name: body
+        label: Text destinace
+        type: rich-text
+
+  - name: itineraries
+    label: Modelové příklady
+    type: collection
+    path: src/content/itineraries
+    view:
+      fields: [title, destination, duration]
+      primary: title
+    fields:
+      - name: title
+        label: Název
+        type: string
+      - name: destination
+        label: Destinace
+        type: string
+      - name: duration
+        label: Délka
+        type: string
+      - name: order
+        label: Pořadí
+        type: number
+      - name: intro
+        label: Úvodní text
+        type: text
+        required: false
+      - name: body
+        label: Program po dnech
+        type: rich-text

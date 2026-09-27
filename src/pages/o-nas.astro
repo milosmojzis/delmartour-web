@@ -1,0 +1,37 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+
+const page = await getEntry('pages', 'o-nas');
+const settingsEntry = await getEntry('settings', 'site');
+if (!page || !settingsEntry) throw new Error('Chybí obsah stránky O nás.');
+const { Content } = await render(page);
+const s = settingsEntry.data;
+---
+<BaseLayout title={page.data.title} description={page.data.summary}>
+  <PageHero title={page.data.title} eyebrow={page.data.eyebrow} intro={page.data.summary} image={page.data.heroImage} imageAlt={page.data.heroAlt} />
+  <section class="section"><div class="container about-grid"><article class="prose"><p class="eyebrow">Osobní přístup</p><h2>Cesty založené na zkušenosti</h2><Content /></article><div class="accent-card"><img src="/images/home/papousek.jpg" alt="Barevný exotický papoušek" /></div></div></section>
+  <section id="kontakt" class="section section--cream"><div class="container"><p class="eyebrow">Kontakt</p><h2>Ozvěte se nám</h2><div class="contact-grid"><a class="contact-tile" href={`tel:${s.phone.replace(/\s/g, '')}`}><small>Telefon</small><strong>{s.phone}</strong><span>Zavolat →</span></a><a class="contact-tile" href={`mailto:${s.email}`}><small>E-mail</small><strong>{s.email}</strong><span>Napsat →</span></a><div class="contact-tile"><small>Sídlo</small><strong>{s.address}</strong></div></div></div></section>
+  <section class="section"><div class="container details-grid"><div><p class="eyebrow">Firemní údaje</p><h2>{s.companyName}</h2><dl><div><dt>IČ</dt><dd>{s.companyId}</dd></div><div><dt>DIČ</dt><dd>{s.vatId}</dd></div><div><dt>Bankovní spojení</dt><dd>{s.bank}<br />Číslo účtu: {s.bankAccount}</dd></div></dl><p class="register">{s.register}</p></div><div><p class="eyebrow">Dokumenty</p><h2>Ke stažení</h2><p class="document-note">Dokumenty byly převzaty z archivované podoby webu a před konečným zveřejněním je třeba ověřit jejich aktuálnost.</p><ul class="documents"><li><a href="/documents/pojistka.pdf">Pojistka k pojistné smlouvě <span>PDF ↓</span></a></li><li><a href="/documents/vseobecne-podminky.pdf">Všeobecné podmínky <span>PDF ↓</span></a></li><li><a href="/documents/vypis-obchodni-rejstrik.pdf">Výpis z obchodního rejstříku <span>PDF ↓</span></a></li><li><a href="/documents/vypis-zivnostensky-rejstrik.pdf">Výpis ze živnostenského rejstříku <span>PDF ↓</span></a></li></ul></div></div></section>
+</BaseLayout>
+<style>
+  .about-grid { display: grid; grid-template-columns: 1fr .8fr; gap: clamp(2rem, 8vw, 7rem); align-items: center; }
+  .accent-card { padding: 1rem; border-radius: var(--radius); background: var(--sea); transform: rotate(2deg); }
+  .accent-card img { width: 100%; min-height: 22rem; border-radius: .8rem; object-fit: cover; transform: rotate(-4deg); box-shadow: var(--shadow); }
+  .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+  .contact-tile { display: flex; min-height: 12rem; padding: 1.4rem; border: 1px solid var(--line); border-radius: 1rem; background: white; flex-direction: column; text-decoration: none; }
+  .contact-tile small { color: var(--sea); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .contact-tile strong { margin-top: auto; font-size: 1.15rem; overflow-wrap: anywhere; }
+  .contact-tile span { color: var(--muted); font-size: .82rem; }
+  .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 9vw, 8rem); }
+  dl { margin: 2rem 0 1.2rem; }
+  dl div { display: grid; grid-template-columns: 8rem 1fr; padding: .7rem 0; border-bottom: 1px solid var(--line); }
+  dt { color: var(--muted); } dd { margin: 0; }
+  .register, .document-note { color: var(--muted); }
+  .documents { margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  .documents li { border-top: 1px solid var(--line); }
+  .documents a { display: flex; padding: 1rem 0; justify-content: space-between; gap: 1rem; font-weight: 700; text-decoration: none; }
+  .documents span { color: var(--sea); font-size: .78rem; }
+  @media (max-width: 760px) { .about-grid, .details-grid, .contact-grid { grid-template-columns: 1fr; } }
+</style>

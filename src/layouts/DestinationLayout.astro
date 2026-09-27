@@ -1,0 +1,35 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
+import DestinationCard from '../components/DestinationCard.astro';
+import { render, type CollectionEntry } from 'astro:content';
+
+const { entry, children = [] } = Astro.props as { entry: CollectionEntry<'destinations'>; children: CollectionEntry<'destinations'>[] };
+const { Content } = await render(entry);
+---
+<BaseLayout title={entry.data.title} description={entry.data.summary} image={entry.data.heroImage || entry.data.cardImage}>
+  <PageHero title={entry.data.title} eyebrow={entry.data.eyebrow} intro={entry.data.summary} image={entry.data.heroImage} imageAlt={entry.data.heroAlt} />
+  <section class="section">
+    <div class="container content-grid">
+      <article class="prose"><Content /></article>
+      <aside class="contact-card">
+        <p class="eyebrow">Cesta na míru</p>
+        <h2>Máte vlastní představu?</h2>
+        <p>Ozvěte se nám. Rádi s vámi probereme možnosti cesty podle vašich požadavků.</p>
+        <a class="button" href="/o-nas/#kontakt">Kontaktovat nás →</a>
+      </aside>
+    </div>
+  </section>
+  {children.length > 0 && <section class="section section--cream"><div class="container"><p class="eyebrow">Vyberte si oblast</p><h2>Kam se vydáte?</h2><div class="child-grid">{children.map((child) => <DestinationCard title={child.data.title} summary={child.data.summary} href={child.data.route} image={child.data.cardImage || child.data.heroImage} />)}</div></div></section>}
+  <Gallery images={entry.data.gallery} title={`Fotografie — ${entry.data.title}`} />
+</BaseLayout>
+<style>
+  .content-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(17rem, .75fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
+  .contact-card { position: sticky; top: 7rem; padding: 1.7rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--cream); }
+  .contact-card h2 { font-size: 2rem; }
+  .contact-card p:not(.eyebrow) { color: var(--muted); }
+  .child-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+  @media (max-width: 850px) { .content-grid { grid-template-columns: 1fr; } .contact-card { position: static; } .child-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .child-grid { grid-template-columns: 1fr; } }
+</style>

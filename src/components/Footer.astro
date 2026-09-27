@@ -1,0 +1,33 @@
+---
+const { settings } = Astro.props;
+---
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <img src="/images/brand/delmar-tour-logo.png" width="416" height="80" alt="Delmar Tour" />
+      <p class="tagline">Poznávací cesty s osobním přístupem.</p>
+    </div>
+    <div>
+      <h2>Kontakt</h2>
+      <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a><br />
+      <a href={`mailto:${settings.email}`}>{settings.email}</a>
+      <p>{settings.address}</p>
+    </div>
+    <div>
+      <h2>Prozkoumejte</h2>
+      <a href="/spanelsko/">Španělsko</a><br /><a href="/karibik/">Karibik</a><br /><a href="/thajsko/">Thajsko</a><br /><a href="/modelove-priklady/">Modelové příklady</a>
+    </div>
+  </div>
+  <div class="container footer-bottom"><span>© {new Date().getFullYear()} {settings.brandName}</span><a href="#top">Zpět nahoru ↑</a></div>
+</footer>
+<style>
+  .site-footer { padding: 4rem 0 1.5rem; background: var(--ink); color: #e9f0f2; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; }
+  img { width: min(240px, 100%); filter: brightness(0) invert(1); }
+  .tagline { margin-top: 1rem; color: #aebdc5; }
+  h2 { margin-bottom: 1rem; color: white; font-family: inherit; font-size: .76rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+  a { color: white; }
+  p { margin: 1rem 0 0; color: #aebdc5; }
+  .footer-bottom { display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,.16); color: #aebdc5; font-size: .86rem; }
+  @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } .footer-bottom { gap: 1rem; } }
+</style>

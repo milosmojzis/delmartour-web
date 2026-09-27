@@ -1,0 +1,82 @@
+---
+const { currentPath = '/' } = Astro.props;
+const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+<header class="site-header" id="top">
+  <div class="header-inner container">
+    <a class="brand" href="/" aria-label="Delmar Tour – úvod">
+      <img src="/images/brand/delmar-tour-logo.png" width="416" height="80" alt="Delmar Tour" />
+      <span>cestovní agentura</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span class="sr-only">Otevřít menu</span><span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" class="primary-nav" aria-label="Hlavní navigace">
+      <a class:list={[{ active: isActive('/') }]} href="/">Úvod</a>
+      <div class="nav-group">
+        <a class:list={[{ active: isActive('/spanelsko') }]} href="/spanelsko/">Španělsko</a>
+        <button class="submenu-toggle" type="button" aria-expanded="false" aria-label="Zobrazit oblasti Španělska">⌄</button>
+        <div class="submenu">
+          <a href="/spanelsko/katalansko/">Katalánsko</a><a href="/spanelsko/valencie/">Valencie</a><a href="/spanelsko/andalusie/">Andalusie</a><a href="/spanelsko/madrid/">Madrid</a><a href="/spanelsko/dalsi-oblasti/">Další oblasti</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a class:list={[{ active: isActive('/karibik') }]} href="/karibik/">Karibik</a>
+        <button class="submenu-toggle" type="button" aria-expanded="false" aria-label="Zobrazit nabídku Karibiku">⌄</button>
+        <div class="submenu"><a href="/karibik/okruh-lodi/">Okruh lodí</a></div>
+      </div>
+      <a class:list={[{ active: isActive('/thajsko') }]} href="/thajsko/">Thajsko</a>
+      <a class:list={[{ active: isActive('/modelove-priklady') }]} href="/modelove-priklady/">Modelové příklady</a>
+      <a class:list={[{ active: isActive('/prakticke-informace') }]} href="/prakticke-informace/">Praktické informace</a>
+      <a class:list={[{ active: isActive('/o-nas') }]} href="/o-nas/">O nás</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#primary-nav');
+  menuButton?.addEventListener('click', () => {
+    const open = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!open));
+    menuButton.querySelector('.sr-only')!.textContent = open ? 'Otevřít menu' : 'Zavřít menu';
+    nav?.classList.toggle('open', !open);
+    document.body.classList.toggle('menu-open', !open);
+  });
+  document.querySelectorAll<HTMLButtonElement>('.submenu-toggle').forEach((button) => {
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!open));
+      button.parentElement?.classList.toggle('submenu-open', !open);
+    });
+  });
+</script>
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(16px); }
+  .header-inner { display: flex; min-height: 5.4rem; align-items: center; justify-content: space-between; gap: 1rem; }
+  .brand { display: flex; flex-direction: column; align-items: flex-start; width: 170px; text-decoration: none; }
+  .brand img { width: 170px; height: auto; }
+  .brand span { margin: -.1rem 0 0 2.25rem; color: var(--muted); font-size: .64rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  .primary-nav { display: flex; align-items: center; gap: clamp(.55rem, 1.4vw, 1.25rem); font-size: .82rem; font-weight: 750; }
+  .primary-nav > a, .nav-group > a { padding: 2rem 0; text-decoration: none; }
+  .primary-nav a:hover, .primary-nav a.active { color: var(--sea); }
+  .primary-nav a.active { text-decoration: underline; text-decoration-color: var(--sun); text-decoration-thickness: 3px; text-underline-offset: .4rem; }
+  .nav-group { position: relative; display: flex; align-items: center; gap: .2rem; }
+  .submenu-toggle { border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+  .submenu { position: absolute; top: calc(100% - .7rem); left: -.9rem; display: grid; min-width: 13rem; padding: .7rem; border: 1px solid var(--line); border-radius: .9rem; background: white; box-shadow: var(--shadow); opacity: 0; visibility: hidden; transform: translateY(-.3rem); transition: .2s; }
+  .submenu a { padding: .55rem .7rem; border-radius: .55rem; text-decoration: none; }
+  .submenu a:hover { background: var(--cream); }
+  .nav-group:hover .submenu, .nav-group:focus-within .submenu, .nav-group.submenu-open .submenu { opacity: 1; visibility: visible; transform: none; }
+  .menu-toggle { display: none; width: 2.8rem; height: 2.8rem; padding: .65rem; border: 1px solid var(--line); border-radius: 50%; background: white; cursor: pointer; }
+  .menu-toggle > span:not(.sr-only) { display: block; height: 2px; margin: 4px 0; background: var(--ink); }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+  @media (max-width: 1050px) {
+    .menu-toggle { display: block; }
+    .primary-nav { position: fixed; inset: 5.4rem 0 auto; display: none; max-height: calc(100vh - 5.4rem); padding: 1rem; overflow-y: auto; border-bottom: 1px solid var(--line); background: var(--paper); font-size: 1rem; }
+    .primary-nav.open { display: grid; }
+    .primary-nav > a, .nav-group > a { padding: .7rem .4rem; }
+    .nav-group { display: grid; grid-template-columns: 1fr auto; }
+    .submenu-toggle { width: 2.7rem; }
+    .submenu { position: static; grid-column: 1 / -1; display: none; margin: 0 0 .5rem 1rem; box-shadow: none; opacity: 1; visibility: visible; transform: none; }
+    .submenu-open .submenu { display: grid; }
+  }
+</style>

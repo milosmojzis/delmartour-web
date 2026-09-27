@@ -1,0 +1,35 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import { getEntry } from 'astro:content';
+
+const { title, description = 'Poznávací zájezdy do Španělska, Karibiku a Thajska s osobním přístupem.', image = '/images/home/karibska-plaz.jpg' } = Astro.props;
+const settingsEntry = await getEntry('settings', 'site');
+if (!settingsEntry) throw new Error('Chybí nastavení webu.');
+const settings = settingsEntry.data;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f3ea" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={`${title} | ${settings.brandName}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <title>{title} | {settings.brandName}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#obsah">Přejít k obsahu</a>
+    <Header currentPath={Astro.url.pathname} />
+    <main id="obsah"><slot /></main>
+    <Footer settings={settings} />
+  </body>
+</html>
