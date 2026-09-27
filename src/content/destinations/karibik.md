@@ -3,7 +3,8 @@ title: Karibik
 route: /karibik/
 order: 7
 eyebrow: Tropické ostrovy
-summary: Kuba i zelené ostrovy Malých Antil, pohádkové pláže a kultura plná hudby a barev.
+summary: Kuba i zelené ostrovečky Malých Antil, pohádkové pláže a kultura plná
+  hudby a barev.
 heroImage: /images/karibik/hero.jpg
 heroAlt: Pobřeží a tropická krajina Karibiku
 cardImage: /images/karibik/dsc2516.jpg
@@ -22,7 +23,6 @@ gallery:
     caption: Exotický plod
 featured: true
 ---
-
 Vydejte se do ráje na zemi a potopte se v Karibském moři obklopeném pohádkovými plážemi.
 
 Poznejte krásy Kuby v její již tradiční podobě plné veselé hudby a skvělých doutníků. Navštivte města, jako jsou Havana, Trinidad či Santiago de Cuba. Tento ostrov je místem, které vás překvapí na každém kroku svou výjimečností a uměním svých obyvatel žít.
