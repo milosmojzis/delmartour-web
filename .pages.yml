@@ -8,39 +8,43 @@ content:
     type: file
     path: src/content/settings/site.json
     fields:
-      - name: brandName
-        label: Název značky
-        type: string
-      - name: descriptor
-        label: Popis značky
-        type: string
-      - name: phone
-        label: Telefon
-        type: string
-      - name: email
-        label: E-mail
-        type: string
-      - name: address
-        label: Sídlo
-        type: string
-      - name: companyName
-        label: Název společnosti
-        type: string
-      - name: companyId
-        label: IČ
-        type: string
-      - name: vatId
-        label: DIČ
-        type: string
-      - name: register
-        label: Zápis v rejstříku
-        type: text
-      - name: bank
-        label: Banka
-        type: text
-      - name: bankAccount
-        label: Číslo účtu
-        type: string
+      - name: site
+        label: Údaje webu a společnosti
+        type: object
+        fields:
+          - name: brandName
+            label: Název značky
+            type: string
+          - name: descriptor
+            label: Popis značky
+            type: string
+          - name: phone
+            label: Telefon
+            type: string
+          - name: email
+            label: E-mail
+            type: string
+          - name: address
+            label: Sídlo
+            type: string
+          - name: companyName
+            label: Název společnosti
+            type: string
+          - name: companyId
+            label: IČ
+            type: string
+          - name: vatId
+            label: DIČ
+            type: string
+          - name: register
+            label: Zápis v rejstříku
+            type: text
+          - name: bank
+            label: Banka
+            type: text
+          - name: bankAccount
+            label: Číslo účtu
+            type: string
 
   - name: pages
     label: Hlavní stránky
